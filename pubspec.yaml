@@ -11,7 +11,12 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  file_picker: ^10.2.0
+  # Use the v12 beta of flutter_file_picker which includes migration to built-in Kotlin
+  # This avoids plugins applying the Kotlin Gradle Plugin and resolves AGP 9+/Flutter build failures.
+  file_picker:
+    git:
+      url: https://github.com/miguelpruivo/flutter_file_picker.git
+      ref: v12.0.0-beta.4
   url_launcher: ^6.3.2
   ming_cute_icons: ^0.0.7
 

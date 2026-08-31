@@ -1,0 +1,35 @@
+name: Flutter Android Build
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+
+    - name: Install Dependencies
+      run: flutter pub get
+
+    - name: Auto-Fix Code Files
+      run: python3 fix_code.py
+
+    - name: Build Release APK
+      run: flutter build apk --release

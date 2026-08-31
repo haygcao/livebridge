@@ -40,16 +40,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Updated service: points to the new Kotlin notification listener -->
         <service
-            android:name=".liveupdate.LiveUpdateNotificationListenerService"
+            android:name="com.happyman.livebridge.notification.LiveBridgeNotificationListenerService"
             android:exported="false"
             android:label="LiveBridge Notification Listener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
         >
             <intent-filter>
-                <action
-                    android:name="android.service.notification.NotificationListenerService"
-                />
+                <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
@@ -78,9 +78,7 @@
             android:label="LiveBridge"
         >
             <intent-filter>
-                <action
-                    android:name="android.service.quicksettings.action.QS_TILE"
-                />
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
 

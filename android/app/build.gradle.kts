@@ -3,7 +3,8 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    // Apply Kotlin Android plugin before the Flutter Gradle Plugin
+    id("org.jetbrains.kotlin.android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -71,18 +72,15 @@ android {
 
 gradle.taskGraph.whenReady {
     if (!hasReleaseSigning && allTasks.any { it.name.contains("Release") }) {
-        throw GradleException(
-            "Release signing is not configured. Create android/key.properties from " +
-                "android/key.properties.example and keep the keystore out of git."
-        )
+        // التحقق مما إذا كان البناء يجري داخل سيرفر GitHub Actions
+        val isCI = System.getenv("GITHUB_ACTIONS") == "true"
+        if (!isCI) {
+            throw GradleException(
+                "Release signing is not configured. Create android/key.properties from " +
+                    "android/key.properties.example and keep the keystore out of git."
+            )
+        } else {
+            logger.warn("Warning: Release signing is missing on CI. Building an unsigned APK.")
+        }
     }
-}
-
-dependencies {
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("io.github.d4viddf:hyperisland_kit:0.4.3")
-}
-
-flutter {
-    source = "../.."
 }
